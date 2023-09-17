@@ -1,0 +1,146 @@
+1. Explain strategies for unit testing asynchronous code that involves callbacks, Promises, and async/await. How do you handle asynchronous assertions and avoid test flakiness?
+-> Strategies for testing asynchronous code include using testing frameworks like Mocha or Jest that provide mechanisms for handling asynchronous assertions. For callbacks, use tools like `done()` in Mocha or `async/await` in Jest. For Promises and async/await, ensure you use `await` for assertions, and use tools like `resolves` or `rejects` matchers in Jest. To avoid flakiness, use tools like sinon for stubbing and mocking, and clear timers or asynchronous operations between tests.
+
+2. What are `async generators` in Node.js, and how do they differ from regular generators in handling asynchronous data streams?
+-> `async generators` are a combination of `async/await` and generators. They allow you to generate asynchronous data streams. Unlike regular generators, async generators can pause execution within an asynchronous function, making them useful for handling asynchronous data, such as reading from a stream or making asynchronous API calls.
+
+3. What are Generators, and how do they relate to asynchronous programming in Node.js?
+-> Generators are functions in JavaScript that can pause and resume their execution. They are often used for asynchronous programming in Node.js to handle complex control flow. Generators are commonly used with libraries like co.js to manage asynchronous code flow by yielding control back to the event loop until asynchronous operations are complete.
+
+4. Explain the concept of "concurrency model" in Node.js and how it impacts the way asynchronous code is executed.
+-> The concurrency model in Node.js is based on a single-threaded event loop. It means that Node.js can execute I/O operations concurrently without blocking the main thread. This allows handling many concurrent connections efficiently. While Node.js uses a single thread, it can utilize non-blocking I/O operations to ensure that other tasks can run concurrently, making it highly efficient for handling asynchronous code.
+
+5. Explain the concept of "backpressure" in the context of streams in Node.js and why it's important in managing data flow.
+-> Backpressure is a mechanism to handle the situation when a slower consumer can't keep up with the rate at which data is produced by a faster producer. It's crucial in managing data flow to prevent memory exhaustion or performance issues. In Node.js streams, backpressure mechanisms allow consumers to signal to producers to slow down or pause data production until they can handle it.
+
+6. Explain the significance of the "microtask queue" in the Node.js event loop and its relationship with Promises.
+-> The microtask queue is a part of the event loop that handles microtasks, which are tasks with higher priority than macrotasks (such as I/O operations and timers). Promises use the microtask queue to execute their `.then()` and `.catch()` callbacks. This ensures that Promise-based code is resolved before other tasks in the event loop, making it suitable for handling asynchronous operations like API requests or file reads.
+
+7. Describe the difference between microtasks and macrotasks in the context of the event loop, and how they impact the execution order of asynchronous code.
+-> Microtasks have higher priority than macrotasks in the event loop. Microtasks include tasks like Promise callbacks and `process.nextTick()`. Macrotasks include I/O operations, timers (e.g., `setTimeout`), and UI events. Microtasks are executed before the next iteration of the event loop, ensuring that Promise-based code or high-priority tasks are handled promptly.
+
+8. Describe the use of the fs.promises module in Node.js for working with files asynchronously, and how does it compare to the callback-based approach with the fs module?
+-> The fs.promises module provides Promises-based versions of file system functions, making it easier to work with files asynchronously. It simplifies error handling and allows you to use async/await. In contrast, the callback-based approach with the fs module requires handling callbacks, which can lead to callback hell (callback pyramid) and less readable code.
+
+9. Explain the concept of parallelism in asynchronous programming and how you can achieve it in Node.js.
+-> Parallelism involves executing multiple tasks simultaneously. In Node.js, you can achieve parallelism by using asynchronous patterns like Promise.all() or Promise.allSettled() to concurrently execute multiple asynchronous operations. This allows you to optimize performance by reducing the time it takes to complete multiple tasks.
+
+10. What tools and techniques can you use for testing and debugging asynchronous code in Node.js effectively?
+-> Tools for testing and debugging asynchronous code include testing frameworks (Mocha, Jest), assertion libraries (Chai, Jest), mocking libraries (Sinon, Jest mocks), and debugging tools (Node.js built-in debugger, VS Code debugger). Techniques involve setting breakpoints, logging, using async/await for better control, and leveraging testing utilities to handle asynchronous assertions.
+
+11. Discuss the concept of Promise cancellation and potential strategies for implementing it in a JavaScript environment that lacks native support.
+-> Promise cancellation is the ability to cancel pending asynchronous operations. In environments lacking native support, you can implement cancellation by creating custom Promise-like objects with cancellation flags and handling cancellation logic within your async functions. Libraries like `p-cancelable` can help achieve this.
+
+12. Explain how you can control concurrency when dealing with multiple asynchronous operations using async/await and the concept of semaphores.
+-> Semaphores can control the number of concurrent asynchronous operations. You can implement them using Promises and async/await. By creating a semaphore with a specific limit and using it to control async function execution, you can ensure that only a defined number of operations run concurrently, helping manage resource usage.
+
+13. How can you ensure that error stack traces remain informative and helpful when working with deeply nested asynchronous code using async/await?
+-> To maintain informative stack traces, make sure to:
+   - Use named functions instead of anonymous functions for better stack trace information.
+   - Ensure that Promise rejections include specific error messages.
+   - Handle errors at appropriate levels in your code and log them with context information.
+   - Use tools like source maps to map minified or transpiled code back to the original source during debugging.
+
+14. What are circular dependencies in Node.js, and why should you avoid them? How can you resolve circular dependencies if they occur in your project?
+-> Circular dependencies occur when two or more modules depend on each other directly or indirectly. They should be avoided because they can lead to unpredictable behavior and make code less maintainable. To resolve them, refactor your code to separate concerns, use dependency inversion, or create a third module to manage the common functionality that both modules depend on.
+
+15. Describe the process of loading and executing modules in Node.js, including the concept of a "require tree."
+-> In Node.js, modules are loaded and executed using the CommonJS module system. When a module is required using `require()`, Node.js loads and caches it. If the module exports an object, subsequent `require()` calls return a reference to that cached object. The "require tree" is the hierarchy of modules and their dependencies, forming the structure of your application.
+
+16. What is the purpose of the `require.cache` / `require.resolve` object in Node.js, and when might you use it?
+-> `require.cache` is an object that caches loaded module objects. You can access it to manipulate or clear module caches. `require.resolve` is a function that returns the resolved filename of a module. You might use these for advanced module management, reloading modules, or clearing caches in specific scenarios like hot module reloading.
+
+17. What is the purpose of the special `index.js` file in a directory when using require to import modules? How does Node.js handle module imports from directories?
+-> The `index.js` file serves as the entry point for a directory when using `require()` to import modules from that directory. When you require a directory, Node.js automatically looks for an `index.js` file within that directory and imports it. This allows you to structure code within a directory and simplify imports.
+
+18. Describe the concept of "dependency injection" in Node.js. How can you implement dependency injection using modules?
+-> Dependency injection is a design pattern where dependencies are provided from the outside rather than being hard-coded within a module. In Node.js, you can implement it by exporting a module's dependencies as functions or objects and injecting those dependencies when requiring the module. This promotes modularity and makes testing and swapping out dependencies easier.
+
+19. Discuss the concept of "tree shaking" in the context of ES6 modules and bundling tools like Webpack. How can tree shaking help optimize the size of your JavaScript bundle, and what considerations should you keep in mind when using it with Node.js modules?
+-> Tree shaking is a technique used by bundling tools to eliminate unused code from the final bundle. While it's commonly associated with front-end development and Webpack, it can be applied to Node.js modules too. However, Node.js modules have different semantics than ES6 modules, and not all bundlers support tree shaking for Node.js. To use tree shaking effectively with Node.js modules, ensure your bundler supports it, and structure your code to be tree-shakable.
+
+20. What is the purpose of the `package.json` file and `package-lock.json`?
+-> 
+   - `package.json`: This file is used to define metadata about your Node.js project, including its name, version, dependencies, and scripts. It also specifies your project's entry point and can include various configuration settings.
+   - `package-lock.json`: This file is automatically generated and helps lock down the specific versions of your project's dependencies to ensure consistency across different environments and builds. It's essential for reproducible builds.
+
+21. What is the "hoisting" mechanism in npm, and how does it impact dependency resolution and the node_modules structure in your project?
+-> "Hoisting" in npm refers to the behavior where npm tries to place dependencies as high as possible in the node_modules tree to avoid deep nesting. This can simplify require paths and reduce potential conflicts. It affects the structure of the node_modules directory by organizing dependencies in a flatter hierarchy, making it easier to manage.
+
+22. Explain the difference between synchronous and asynchronous route handlers in Express.js. When would you use each?
+-> In Express.js, synchronous route handlers execute immediately and return a response synchronously. They are suitable for simple and fast operations. Asynchronous route handlers use async/await or Promises to perform non-blocking operations such as database queries or API calls. You use them when you need to wait for external resources and ensure that your server remains responsive during the operation.
+
+23. What does REST stand for, and what are the key principles of RESTful architecture?
+-> REST stands for "Representational State Transfer." Key principles of RESTful architecture include:
+   - **Statelessness**: Each request from a client to a server must contain all information needed to understand and process the request.
+   - **Client-Server**: Separation of concerns between the client and server.
+   - **Uniform Interface**: A consistent and predictable way to interact with resources using standard HTTP methods.
+   - **Resource-Based**: Resources (e.g., URLs) are at the core of the architecture.
+   - **Representation**: Resources can have multiple representations (e.g., JSON, XML).
+
+24. How do you handle versioning in a RESTful API to ensure backward compatibility with clients?
+-> Versioning in a RESTful API can be achieved through URI versioning (e.g., `/v1/resource`) or using headers (e.g., `Accept` or `Content-Type`). It's crucial to establish versioning early and maintain backward compatibility by documenting changes, providing deprecation notices, and ensuring old versions remain accessible for existing clients.
+
+25. What are the advantages and disadvantages of using RESTful APIs over other API design approaches, such as SOAP?
+-> 
+   - **Advantages of REST**:
+     - Simplicity and ease of use.
+     - Lightweight and human-readable formats like JSON.
+     - Scalability due to statelessness.
+     - Use of standard HTTP methods.
+   - **Disadvantages of REST**:
+     - Lack of built-in standards for security and transactions.
+     - Limited support for complex operations.
+   - **Advantages of SOAP**:
+     - Built-in security (WS-Security).
+     - Strongly-typed contracts.
+     - Support for ACID transactions.
+   - **Disadvantages of SOAP**:
+     - Complex and heavyweight XML-based protocol.
+     - Limited scalability.
+     - Less flexibility compared to REST.
+
+26. What is an ORM (Object-Relational Mapping) in the context of Node.js and databases? Give an example of an ORM?
+-> An ORM is a programming technique that allows you to interact with relational databases using object-oriented code. An example of an ORM for Node.js is Sequelize, which provides an abstraction layer over SQL databases and enables developers to work with databases using JavaScript objects.
+
+27. What is the difference between NoSQL and SQL databases, and when might you choose one over the other in a Node.js application?
+->
+    - SQL databases are relational and use structured schemas, while NoSQL databases are non-relational and use flexible schemas (e.g., JSON documents).
+    - Choose SQL databases for structured data with complex relationships and ACID transactions. Choose NoSQL databases for flexible, schema-less data with high scalability and distributed systems.
+
+28. What are the advantages of using an Object-Relational Mapping (ORM) library like Sequelize or TypeORM in a Node.js application compared to writing raw SQL queries?
+    - ORM libraries abstract the database, making it easier to work with different databases.
+    - They provide a higher-level, object-oriented approach to database interactions.
+    - ORM libraries handle query generation, reducing the risk of SQL injection.
+    - They offer features like migrations, schema validation, and model associations, enhancing productivity and maintainability.
+
+29. Describe the advantages and disadvantages of using an Object Document Mapper (ODM) like Mongoose for MongoDB compared to using a traditional ORM for SQL databases in Node.js.
+    - Advantages of ODM (Mongoose):
+      - Simplifies working with MongoDB's schema-less, document-based structure.
+      - Provides validation, middleware, and a high-level API.
+      - Supports nested documents and relationships.
+    - Disadvantages:
+      - May not be suitable for applications requiring complex joins and transactions.
+    - Advantages of ORM (e.g., Sequelize):
+      - Handles complex SQL operations, joins, and transactions well.
+      - Works with multiple relational databases.
+    - Disadvantages:
+      - May not be as intuitive for NoSQL databases like MongoDB.
+
+30. What is database sharding, and how can it be implemented in a Node.js application to handle large datasets?
+    - Database sharding is a technique for horizontally partitioning large datasets across multiple database servers or nodes to improve scalability and performance. In a Node.js application, you can implement sharding by routing requests to the appropriate shard based on a predefined key or rule. Distributed databases like MongoDB support sharding.
+
+31. Explain the CAP theorem in the context of distributed databases. How does it influence database selection and design in a Node.js application?
+    - The CAP theorem states that in a distributed system, you can have at most two out of three guarantees: Consistency, Availability, and Partition tolerance. It influences database selection by forcing you to prioritize between consistency and availability based on your application's needs. In Node.js, you must choose a database that aligns with your desired trade-offs.
+
+32. What is data warehousing, and how can you integrate data warehousing solutions with a Node.js application to analyze and report on large datasets?
+    - Data warehousing is the process of collecting, storing, and managing large volumes of data for analysis and reporting. To integrate data warehousing with a Node.js application, you can use ETL (Extract, Transform, Load) processes to transfer data from your operational database to a data warehouse like Amazon Redshift or Google BigQuery. Then, use Node.js to query and analyze the data in the warehouse.
+
+33. Explain the concept of database normalization and denormalization. When should you denormalize data, and how can it impact the performance of your Node.js application?
+    - Database normalization is the process of organizing data in a relational database to reduce redundancy and improve data integrity. Denormalization is the opposite, where redundant data is intentionally introduced to improve query performance. You should denormalize data when read-heavy operations are more critical than data modification, as it can improve query performance but may increase data maintenance complexity.
+
+34. What is the role of the "repository pattern" in structuring database interactions in a Node.js application? How does it promote code reusability and maintainability?
+    - The repository pattern is a design pattern that separates database access logic from the rest of the application. It provides a consistent and abstracted interface for data access. In a Node.js application, it promotes code reusability and maintainability by centralizing database operations, making it easier to test, change, and scale database interactions without affecting the rest of the codebase.
+
+35. What is the role of a connection pool when working with databases in Node.js? Why is it beneficial?
+    - A connection pool is a collection of pre-established database connections that can be reused to handle incoming requests efficiently. It's beneficial because creating and destroying database connections for each request is resource-intensive and slow. Connection pooling allows you to reuse connections, improving performance and reducing overhead.

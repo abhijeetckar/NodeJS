@@ -1,0 +1,80 @@
+0. What is NodeJS?
+->  Node.js is a javascript runtime environment well suited to build server side applications
+    It uses an event-driven, non-blocking I/O model, making it efficient for handling concurrent connections and asynchronous operations.
+    
+1. Explain the event-driven, non-blocking I/O model that Node.js is known for. Why is it important?
+-> Node.js utilizes an event-driven, non-blocking I/O model where tasks are executed asynchronously without waiting for previous tasks to complete. This allows Node.js to efficiently handle multiple connections and operations concurrently. It's important because it maximizes resource utilization, making Node.js suitable for high-performance applications, such as web servers, where many clients connect simultaneously.
+
+2. Name some core modules in Node.js and briefly describe their functionalities.
+-> Core modules in Node.js include:
+   - `fs`: Provides file system operations like reading, writing, and deleting files.
+   - `http`: Allows creating HTTP servers and clients.
+   - `path`: Helps with working with file paths.
+   - `os`: Provides information about the operating system.
+   - `util`: Offers utility functions for common tasks.
+
+3. What is npm, and how does it relate to Node.js?
+-> Scripts. Dependency Management. Library Repository. Package Publishing. Cyclic Dependency
+    npm is the Node Package Manager. It is the default package manager for Node.js. npm is used for:
+   - **Dependency Management**: It helps manage and install external libraries (packages) into your Node.js projects.
+   - **Library Repository**: It hosts a vast collection of open-source libraries and packages.
+   - **Package Publishing**: Developers can publish their own packages to the npm registry.
+   - **Cyclic Dependency**: npm handles dependencies efficiently, preventing cyclic dependencies in your projects.
+
+4. How can you manage and handle multiple concurrent connections in a Node.js application?
+-> Node.js handles multiple concurrent connections using an event-driven architecture. You can use libraries like the `http` module to create web servers that can handle multiple client requests simultaneously. Additionally, you can utilize concepts like callbacks, Promises, or async/await to manage asynchronous operations within these connections efficiently.
+
+5. What is the role of the setTimeout, setImmediate, and process.nextTick functions in the event loop?
+-> 
+   - `setTimeout`: Schedules a callback to be executed after a specified delay, allowing other tasks to continue.
+   - `setImmediate`: Schedules a callback to be executed in the next iteration of the event loop, often used for I/O-intensive tasks.
+   - `process.nextTick`: Executes a callback at the start of the next iteration of the event loop, allowing high-priority tasks to run immediately after the current operation.
+
+6. How can you control the order of execution for multiple asynchronous tasks in Node.js, especially when they depend on the results of previous tasks?
+-> You can use callbacks, Promises, or async/await to control the order of execution for dependent asynchronous tasks. Promises and async/await are particularly helpful for handling complex asynchronous workflows with better readability and error handling.
+
+7. Have you worked with the util.promisify utility in Node.js? If so, how does it simplify working with callbacks?
+-> `util.promisify` is a utility in Node.js that converts callback-based functions into Promises, making it easier to work with asynchronous code. It simplifies error handling and allows you to use async/await with functions that traditionally used callbacks.
+
+8. When should you choose callbacks over Promises or async/await, and vice versa?
+-> You should choose callbacks when dealing with simple asynchronous operations. Promises or async/await are preferred for complex, multi-step asynchronous workflows, as they offer better readability, error handling, and are more maintainable.
+
+9. How do you handle timeouts or race conditions when using async/await for multiple asynchronous operations?
+-> You can handle timeouts using `Promise.race()` to resolve the first Promise that settles. To prevent race conditions, ensure that your asynchronous operations don't interfere with each other and use appropriate synchronization mechanisms if needed.
+
+10. Custom Promise Implementations
+-> Please provide more context or a specific question regarding custom Promise implementations.
+
+11. What is the relationship between Promises and Async/Await at the internal level? How does await actually work under the hood?
+-> Promises serve as the foundation for async/await. When you use `await`, it pauses the execution of the surrounding function until the Promise is resolved. Under the hood, `await` is essentially syntactic sugar for registering a callback using `.then()` on the Promise and pausing the function execution until that callback is executed.
+
+12. Dive into the inner workings of the Node.js event loop. How does it handle different types of asynchronous tasks, and how can you optimize your code to work efficiently with the event loop?
+-> The Node.js event loop is a complex topic that involves understanding how it handles I/O, timers, and callbacks. To optimize your code for the event loop, you should use asynchronous patterns effectively, minimize blocking operations, and utilize tools like worker threads and clusters for CPU-intensive tasks.
+
+13. What is a module in Node.js, and why are modules important in Node.js development?
+-> A module in Node.js is a reusable block of code that encapsulates functionality and variables. Modules are crucial in Node.js development because they promote code organization, reusability, and maintainability. They allow you to structure your application into smaller, manageable parts, making it easier to collaborate on and maintain large codebases.
+
+14. Explain the difference between the module.exports and exports objects in a CommonJS module. When would you use one over the other?
+-> In a CommonJS module, both `module.exports` and `exports` can be used to export values. However, `module.exports` is the primary way to export values, and `exports` is just a shorthand for it. If you want to export a single value or object, you can use `module.exports`. If you want to export multiple values as properties of an object, you can use `exports`. In most cases, it's recommended to use `module.exports` for consistency.
+
+15. What is the difference between a package and a module?
+-> In Node.js:
+   - A **module** is a single file that encapsulates a piece of functionality or code.
+   - A **package** is a directory that contains one or more modules, along with a `package.json` file that describes the package's metadata and dependencies. Packages can be published to the npm registry for sharing and reuse.
+
+
+
+
+
+Further Reading
+~ worker_threads 
+~ cluster 
+~ process
+~ libuv
+~ stream
+~ fs
+~ async_hooks
+~ backpressure
+~ design patterns
+~ node_modules
+~ nodejs doc
